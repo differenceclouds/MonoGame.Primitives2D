@@ -431,6 +431,38 @@ namespace MonoGame
 
         #region DrawCircle
 
+		/// <summary>
+		/// Draw a filled circle. Uses different method than non-filled, so sides are not a parameter.
+		/// Adapted from http://fredericgoset.ovh/mathematiques/courbes/en/filled_circle.html.
+		/// </summary>
+		/// <param name="spriteBatch">The destination drawing surface</param>
+		/// <param name="center">The center of the circle</param>
+		/// <param name="radius">The radius of the circle</param>
+		/// <param name="color">The color of the circle</param>
+		public static void FillCircle(this SpriteBatch spriteBatch, Vector2 center, float radius, Color color)
+		{
+			//todo: increase efficiency
+			float x = 0;
+			float y = radius;
+			float m = 5 - 4 * radius;
+
+			while (x <= y) {
+				DrawLine(spriteBatch, center.X - y, center.Y - x, center.X + y, center.Y - x, color);
+				DrawLine(spriteBatch, center.X - y, center.Y + x, center.X + y, center.Y + x, color);
+
+				if (m > 0) {
+					DrawLine(spriteBatch, center.X - x, center.Y - y, center.X + x, center.Y - y, color);
+					DrawLine(spriteBatch, center.X - x, center.Y + y, center.X + x, center.Y + y, color);
+					y--;
+					m -= 8 * y;
+				}
+				x++;
+				m += 8 * x + 4;
+			}
+		}
+
+
+            
         /// <summary>
         /// Draw a circle
         /// </summary>
